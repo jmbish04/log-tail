@@ -5,13 +5,16 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "npm run build:frontend && npm run build && wrangler deploy",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:backend": "esbuild src/index.ts --bundle --format=esm --platform=browser --target=es2022 --outfile=dist/worker.js --sourcemap",
+    "build:frontend": "node scripts/build-frontend.mjs",
+    "sync:frontend": "mkdir -p public && rsync -a --delete frontend/dist/ public/",
+    "deploy": "npm run build && wrangler deploy",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "cf-typegen": "wrangler types",
     "migrate": "wrangler d1 migrations apply DB --remote",
-    "build:frontend": "cd frontend && npm run build",
-    "dev:frontend": "cd frontend && npm run dev"
+    "dev:frontend": "npm --prefix frontend run dev"
   },
   "keywords": [
     "cloudflare",
@@ -25,6 +28,7 @@
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.5.0",
     "@cloudflare/workers-types": "^4.20241106.0",
+    "esbuild": "^0.24.0",
     "typescript": "^5.6.3",
     "vitest": "^2.1.8",
     "wrangler": "^3.90.0"
