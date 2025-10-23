@@ -262,20 +262,20 @@ const displayTime = (utcString: string, timezone: string = 'America/New_York') =
 ### shadcn/ui Components to Install
 
 ```bash
-npx shadcn-ui@latest init
-npx shadcn-ui@latest add button
-npx shadcn-ui@latest add card
-npx shadcn-ui@latest add tabs
-npx shadcn-ui@latest add badge
-npx shadcn-ui@latest add table
-npx shadcn-ui@latest add dialog
-npx shadcn-ui@latest add input
-npx shadcn-ui@latest add select
-npx shadcn-ui@latest add textarea
-npx shadcn-ui@latest add scroll-area
-npx shadcn-ui@latest add separator
-npx shadcn-ui@latest add alert
-npx shadcn-ui@latest add skeleton
+npx shadcn@latest init
+npx shadcn@latest add button
+npx shadcn@latest add card
+npx shadcn@latest add tabs
+npx shadcn@latest add badge
+npx shadcn@latest add table
+npx shadcn@latest add dialog
+npx shadcn@latest add input
+npx shadcn@latest add select
+npx shadcn@latest add textarea
+npx shadcn@latest add scroll-area
+npx shadcn@latest add separator
+npx shadcn@latest add alert
+npx shadcn@latest add skeleton
 ```
 
 ### Building for Production
@@ -316,7 +316,7 @@ VITE_WS_URL=wss://logs.example.workers.dev
 
 ### Frontend
 - [ ] Install dependencies: `cd frontend && npm install`
-- [ ] Configure shadcn/ui: `npx shadcn-ui@latest init`
+- [ ] Configure shadcn/ui: `npx shadcn@latest init`
 - [ ] Build: `npm run build`
 - [ ] Copy to public: `cp -r dist/* ../public/`
 - [ ] Redeploy worker to include assets

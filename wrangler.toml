@@ -1,46 +1,31 @@
-name = "log-tail-service"
+# --- Core Worker Definition ---
+name = "log-tail"
 main = "src/index.ts"
 compatibility_date = "2025-01-01"
 
+# --- Bindings ---
+
 # D1 Database for log metadata and configuration
+# database_name = "log-tail"
+# database_id = "723535ee-4f71-4b36-b262-0bc8c0a0f9f5"
 [[d1_databases]]
 binding = "DB"
 database_name = "log-tail"
-database_id = "723535ee-4f71-4b36-b262-0bc8c0a0f9f5"  # Replace with actual database ID after creation
+database_id = "723535ee-4f71-4b36-b262-0bc8c0a0f9f5"
 
 # R2 for full log archive
 [[r2_buckets]]
 binding = "LOGS_ARCHIVE"
 bucket_name = "log-tail-archive"
 
-# AI binding for agentic analysis
-[ai]
-binding = "AI"
-
-# Environment variables
-[vars]
-DEFAULT_TTL_DAYS = "30"
-ENABLE_WEBSOCKET = "true"
-CLEANUP_BATCH_SIZE = "1000"
-
-# Secrets (set with: wrangler secret put LOG_SERVICE_API_KEY)
-# LOG_SERVICE_API_KEY = "your-secret-key"
-
-# Cron triggers for cleanup and daily global analysis
-[triggers]
-crons = [
-    "0 2 * * *",   # Daily cleanup at 2 AM
-    "0 3 * * *"    # Daily global analysis at 3 AM
-]
-
 # Durable Objects for analysis state management
 [[durable_objects.bindings]]
 name = "ANALYSIS_AGENT"
 class_name = "AnalysisAgent"
 
-[[migrations]]
-tag = "v1"
-new_classes = ["AnalysisAgent"]
+# AI binding for agentic analysis
+[ai]
+binding = "AI"
 
 # Queue for background analysis jobs
 [[queues.producers]]
@@ -48,7 +33,7 @@ queue = "log-tail-analysis"
 binding = "ANALYSIS_QUEUE"
 
 [[queues.consumers]]
-queue = "analysis-queue"
+queue = "log-tail-analysis"
 max_batch_size = 10
 max_batch_timeout = 30
 max_retries = 3
@@ -56,9 +41,33 @@ max_retries = 3
 # Assets binding for React frontend
 [assets]
 directory = "./public"
-binding = "ASSETS"
+binding = "ASSETS" # Note: This binding was not in your original file, I'm adding it based on the section header.
 
-# Enable observability (optional - for monitoring the logging service itself)
+# --- Environment & Secrets ---
+
+# Environment variables
+[vars]
+DEFAULT_TTL_DAYS = "30"
+ENABLE_WEBSOCKET = "true"
+CLEANUP_BATCH_SIZE = "1000"
+
+# Secrets are set via the command line:
+# wrangler secret put LOG_SERVICE_API_KEY
+
+# --- Triggers & Scheduling ---
+[triggers]
+crons = [
+    "0 2 * * *",  # Daily cleanup at 2 AM
+    "0 3 * * *"   # Daily global analysis at 3 AM
+]
+
+# --- Migrations ---
+[[migrations]]
+tag = "v1"
+new_classes = ["AnalysisAgent"]
+
+# --- Observability ---
+# (Optional - for monitoring the logging service itself)
 [observability]
 enabled = true
 head_sampling_rate = 0.1
