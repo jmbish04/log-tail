@@ -5,7 +5,7 @@
 
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import { Env, TraceItem } from './types';
+import { AppBindings, Env, TraceItem } from './types';
 import { tailHandler } from './handlers/tail';
 import { httpRoutes } from './handlers/http';
 import { analysisRoutes } from './handlers/analysis';
@@ -19,7 +19,7 @@ import { AnalysisQueueMessage } from './types-extended';
 export { AnalysisAgent } from './durable-objects/AnalysisAgent';
 
 // Initialize Hono app
-const app = new Hono<{ Bindings: Env }>();
+const app = new Hono<AppBindings>();
 
 // CORS middleware for external services
 app.use(

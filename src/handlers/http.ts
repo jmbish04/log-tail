@@ -3,7 +3,7 @@
  */
 
 import { Hono } from 'hono';
-import { Env, IngestRequest, BatchIngestRequest, LogSearchParams } from '../types';
+import { AppBindings, IngestRequest, BatchIngestRequest, LogSearchParams } from '../types';
 import { ingestLog, batchIngestLogs, normalizeLogLevel } from '../lib/ingester';
 import { searchLogs, getRecentLogs, getLogStats, getServiceNames, getLogById } from '../lib/search';
 import { getServiceConfig, updateServiceConfig, getAllServiceConfigs, getServiceConfigOrDefault } from '../lib/config';
@@ -11,7 +11,7 @@ import { getLogFromR2 } from '../lib/storage';
 import { authenticateRequest } from '../middleware/auth';
 import { apiRateLimit, batchIngestRateLimit } from '../middleware/rate-limit';
 
-export const httpRoutes = new Hono<{ Bindings: Env }>();
+export const httpRoutes = new Hono<AppBindings>();
 
 /**
  * POST /ingest - Ingest a single log entry
