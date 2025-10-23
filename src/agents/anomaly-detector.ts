@@ -216,9 +216,9 @@ function performRuleBasedDetection(
     // Volume anomaly
     if (volumeChange > 2.0 && currentVolume > historicalVolume * 2) {
         has_anomaly = true;
-        severity = Math.max(severity === 'high' ? 2 : severity === 'medium' ? 1 : 0, 1) === 2
-            ? 'high'
-            : 'medium';
+        if (severity !== 'high') {
+            severity = 'medium';
+        }
         description += '. Unusual spike in log volume detected';
         recommendation += '. Check for potential logging loops or system issues';
     } else if (volumeChange > 2.0 && currentVolume < historicalVolume * 0.5) {
