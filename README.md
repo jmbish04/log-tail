@@ -1,1 +1,1 @@
-QSBsaWdodHdlaWdodCByZWFsLXRpbWUgbG9nIHRhaWxpbmcgYW5kIHZpc3VhbGl6YXRpb24gdG9vbCBmb3IgZGV2ZWxvcGVycw==
+A lightweight real time log tailing and visualization tool for developers
