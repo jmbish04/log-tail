@@ -1,4 +1,4 @@
-name = "logsService"
+name = "log-tail"
 main = "src/index.ts"
 compatibility_date = "2025-01-01"
 
