@@ -1,2 +1,1 @@
-# log-tail
-A lightweight real-time log tailing and visualization tool for developers
+QSBsaWdodHdlaWdodCByZWFsLXRpbWUgbG9nIHRhaWxpbmcgYW5kIHZpc3VhbGl6YXRpb24gdG9vbCBmb3IgZGV2ZWxvcGVycw==
