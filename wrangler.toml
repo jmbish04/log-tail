@@ -57,8 +57,8 @@ CLEANUP_BATCH_SIZE = "1000"
 # --- Triggers & Scheduling ---
 [triggers]
 crons = [
-    "0 2 * * *",  # Daily cleanup at 2 AM
-    "0 3 * * *"   # Daily global analysis at 3 AM
+    "0 2 * * *",   # Daily cleanup at 2 AM
+    "0 3 * * *"    # Daily global analysis at 3 AM
 ]
 
 # --- Migrations ---
