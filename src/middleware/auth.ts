@@ -3,12 +3,12 @@
  */
 
 import { Context, Next } from 'hono';
-import { Env } from '../types';
+import { AppBindings } from '../types';
 
 /**
  * Middleware to authenticate API requests using Bearer token
  */
-export async function authenticateRequest(c: Context<{ Bindings: Env }>, next: Next) {
+export async function authenticateRequest(c: Context<AppBindings>, next: Next) {
     const authHeader = c.req.header('Authorization');
 
     if (!authHeader) {
@@ -57,7 +57,7 @@ function constantTimeCompare(a: string, b: string): boolean {
 /**
  * Optional authentication - validates token if present but doesn't require it
  */
-export async function optionalAuthentication(c: Context<{ Bindings: Env }>, next: Next) {
+export async function optionalAuthentication(c: Context<AppBindings>, next: Next) {
     const authHeader = c.req.header('Authorization');
 
     if (authHeader) {

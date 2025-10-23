@@ -4,13 +4,12 @@
  */
 
 import { Hono } from 'hono';
-import { Env } from '../types';
+import { AppBindings } from '../types';
 import { AnalysisRequest, AnalysisQueueMessage } from '../types-extended';
 import { authenticateRequest } from '../middleware/auth';
 import { parseISO, isValid, getTime } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
 
-export const analysisRoutes = new Hono<{ Bindings: Env }>();
+export const analysisRoutes = new Hono<AppBindings>();
 
 /**
  * POST /analyze - Trigger on-demand log analysis

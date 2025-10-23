@@ -15,6 +15,13 @@ export interface Env {
     ASSETS: Fetcher;
 }
 
+export type AppBindings = {
+    Bindings: Env;
+    Variables: {
+        authenticated?: boolean;
+    };
+};
+
 export interface LogEntry {
     id?: string;
     service_name: string;

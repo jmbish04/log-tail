@@ -2,7 +2,7 @@
  * Core ingestion logic for processing and storing logs
  */
 
-import { LogEntry } from '../types';
+import { LogEntry, LogLevel } from '../types';
 import { storeLogMetadata, storeLogInR2, updateLogR2Key } from './storage';
 
 /**
@@ -125,15 +125,15 @@ function validateLogEntry(log: LogEntry): void {
 /**
  * Normalize log level to standard format
  */
-export function normalizeLogLevel(level: string): string {
+export function normalizeLogLevel(level: string): LogLevel {
     const normalized = level.toUpperCase();
 
     // Map common variations
-    const levelMap: Record<string, string> = {
+    const levelMap: Record<string, LogLevel> = {
         'WARNING': 'WARN',
         'FATAL': 'CRITICAL',
         'TRACE': 'DEBUG',
     };
 
-    return levelMap[normalized] || normalized;
+    return levelMap[normalized] || (normalized as LogLevel);
 }

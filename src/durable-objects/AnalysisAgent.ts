@@ -6,6 +6,20 @@
 import { Env } from '../types';
 import { AnalysisSession, AnalysisWorkflowParams } from '../types-extended';
 
+interface AnalysisUpdatePayload {
+    logs_processed?: number;
+    current_step?: string;
+    error_count?: number;
+    warning_count?: number;
+    info_count?: number;
+}
+
+interface AnalysisCompletePayload {
+    summary: string;
+    patterns: string[];
+    recommendations: string[];
+}
+
 interface AnalysisState {
     session: AnalysisSession;
     logs_processed: number;
@@ -57,7 +71,7 @@ export class AnalysisAgent implements DurableObject {
      * Start a new analysis session
      */
     private async handleStart(request: Request): Promise<Response> {
-        const params: AnalysisWorkflowParams = await request.json();
+        const params = (await request.json()) as AnalysisWorkflowParams;
 
         // Create initial session
         const session: AnalysisSession = {
@@ -132,7 +146,7 @@ export class AnalysisAgent implements DurableObject {
      * Update analysis progress
      */
     private async handleUpdate(request: Request): Promise<Response> {
-        const update = await request.json();
+        const update = (await request.json()) as AnalysisUpdatePayload;
         const state = await this.state.storage.get<AnalysisState>('analysis_state');
 
         if (!state) {
@@ -171,7 +185,7 @@ export class AnalysisAgent implements DurableObject {
      * Complete the analysis
      */
     private async handleComplete(request: Request): Promise<Response> {
-        const result = await request.json();
+        const result = (await request.json()) as AnalysisCompletePayload;
         const state = await this.state.storage.get<AnalysisState>('analysis_state');
 
         if (!state) {
@@ -226,7 +240,7 @@ export class AnalysisAgent implements DurableObject {
      * Mark analysis as failed
      */
     private async handleFail(request: Request): Promise<Response> {
-        const { error } = await request.json();
+        const { error } = (await request.json()) as { error: string };
         const state = await this.state.storage.get<AnalysisState>('analysis_state');
 
         if (!state) {
