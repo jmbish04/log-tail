@@ -154,7 +154,7 @@ Uses historical baselines and AI analysis for more sophisticated pattern recogni
 {
   "service_name": "api-gateway",
   "has_anomaly": true,
-  "severity": "high",
+  "severity": "HIGH",
   "description": "Error rate increased by 35% compared to 24-hour average",
   "recommendation": "Investigate error sources immediately. Check for deployment issues or external service failures."
 }
