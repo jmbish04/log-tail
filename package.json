@@ -1,7 +1,7 @@
 {
-  "name": "logsService",
-  "version": "1.0.0",
-  "description": "Comprehensive logging service for Cloudflare Workers with Tail Worker integration",
+  "name": "cloudflare-logging-service",
+  "version": "2.0.0",
+  "description": "AI-powered logging service for Cloudflare Workers with Durable Objects, Workflows, and real-time analysis",
   "main": "src/index.ts",
   "scripts": {
     "dev": "wrangler dev",

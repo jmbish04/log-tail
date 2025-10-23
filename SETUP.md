@@ -12,7 +12,6 @@ Step-by-step guide to deploy the Cloudflare Logging Service.
 ## Step 1: Install Dependencies
 
 ```bash
-cd logsService
 npm install
 ```
 
@@ -120,7 +119,7 @@ Expected response:
   "service": "logsService",
   "db": "connected",
   "timestamp": 1234567890000,
-  "version": "1.0.0"
+  "version": "2.0.0"
 }
 ```
 

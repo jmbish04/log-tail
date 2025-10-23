@@ -42,7 +42,7 @@ app.get('/health', async (c) => {
             service: 'logsService',
             db: dbCheck ? 'connected' : 'disconnected',
             timestamp: Date.now(),
-            version: '1.0.0',
+            version: '2.0.0',
         });
     } catch (error: any) {
         return c.json(

@@ -286,7 +286,7 @@ cd frontend
 npm run build
 
 # Output goes to frontend/dist
-# Copy to logsService/public for Workers Assets binding
+# Copy to public/ directory for Workers Assets binding
 cp -r dist/* ../public/
 
 # Deploy worker (includes assets)
