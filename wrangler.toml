@@ -1,4 +1,4 @@
-name = "logsService"
+name = "log-tail-service"
 main = "src/index.ts"
 compatibility_date = "2025-01-01"
 
@@ -38,6 +38,10 @@ crons = [
 name = "ANALYSIS_AGENT"
 class_name = "AnalysisAgent"
 
+[[migrations]]
+tag = "v1"
+new_classes = ["AnalysisAgent"]
+
 # Queue for background analysis jobs
 [[queues.producers]]
 queue = "log-tail-analysis"
@@ -48,11 +52,6 @@ queue = "analysis-queue"
 max_batch_size = 10
 max_batch_timeout = 30
 max_retries = 3
-
-# Workflows for orchestration
-[[workflows]]
-name = "log-tail-analysis"
-binding = "ANALYSIS_WORKFLOW"
 
 # Assets binding for React frontend
 [assets]

@@ -12,7 +12,6 @@ export interface Env {
     CLEANUP_BATCH_SIZE: string;
     ANALYSIS_AGENT: DurableObjectNamespace;
     ANALYSIS_QUEUE: Queue;
-    ANALYSIS_WORKFLOW: Workflow;
     ASSETS: Fetcher;
 }
 
