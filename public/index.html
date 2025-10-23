@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Logging Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 800px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .version {
+            color: #667eea;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin: 30px 0;
+        }
+        h2 {
+            color: #555;
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+        }
+        .endpoints {
+            display: grid;
+            gap: 12px;
+        }
+        .endpoint {
+            background: #f7f7f7;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .endpoint-method {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .endpoint-path {
+            color: #333;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .endpoint-desc {
+            color: #666;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .feature {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .feature-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .feature-desc {
+            font-size: 13px;
+            color: #666;
+        }
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .note strong {
+            color: #856404;
+        }
+        a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Cloudflare Logging Service</h1>
+        <div class="version">Version 2.0.0 - AI-Powered Analysis Platform</div>
+
+        <div class="section">
+            <h2>✨ Key Features</h2>
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🔍</div>
+                    <div class="feature-title">Log Collection</div>
+                    <div class="feature-desc">Tail Workers & HTTP API</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🤖</div>
+                    <div class="feature-title">AI Analysis</div>
+                    <div class="feature-desc">Automated Insights</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Dashboards</div>
+                    <div class="feature-desc">Real-time Metrics</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💬</div>
+                    <div class="feature-title">AI Chat</div>
+                    <div class="feature-desc">Interactive Help</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>Note:</strong> The React dashboard is in development. For now, use the API endpoints below to interact with the service.
+        </div>
+
+        <div class="section">
+            <h2>📡 API Endpoints</h2>
+            <div class="endpoints">
+                <div class="endpoint">
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-path">/health</span>
+                    <div class="endpoint-desc">Check service health and connectivity</div>
+                </div>
+                <div class="endpoint">
+                    <span class="endpoint-method">POST</span>
+                    <span class="endpoint-path">/api/v1/logs/ingest</span>
+                    <div class="endpoint-desc">Submit a single log entry (requires auth)</div>
+                </div>
+                <div class="endpoint">
+                    <span class="endpoint-method">POST</span>
+                    <span class="endpoint-path">/api/v1/logs/ingest/batch</span>
+                    <div class="endpoint-desc">Submit multiple log entries (requires auth)</div>
+                </div>
+                <div class="endpoint">
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-path">/api/v1/logs/search</span>
+                    <div class="endpoint-desc">Search and filter logs (requires auth)</div>
+                </div>
+                <div class="endpoint">
+                    <span class="endpoint-method">POST</span>
+                    <span class="endpoint-path">/api/v1/analysis/analyze</span>
+                    <div class="endpoint-desc">Trigger AI-powered log analysis (requires auth, UTC timestamps)</div>
+                </div>
+                <div class="endpoint">
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-path">/api/v1/analysis/status/:id</span>
+                    <div class="endpoint-desc">Check analysis status (requires auth)</div>
+                </div>
+                <div class="endpoint">
+                    <span class="endpoint-method">POST</span>
+                    <span class="endpoint-path">/api/v1/chat/chat</span>
+                    <div class="endpoint-desc">Chat with AI assistant about logs (requires auth)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📚 Documentation</h2>
+            <p style="margin: 15px 0;">
+                <a href="/openapi.json" target="_blank">📄 OpenAPI Specification</a> |
+                <a href="https://github.com/your-org/your-repo" target="_blank">📖 Full Documentation</a>
+            </p>
+            <p style="color: #666; font-size: 14px;">
+                See IMPLEMENTATION_GUIDE.md for detailed setup instructions and frontend development guide.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

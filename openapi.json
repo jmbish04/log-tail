@@ -1,0 +1,271 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Cloudflare Logging Service API",
+    "description": "Comprehensive logging service with AI-powered analysis, tail worker integration, and real-time insights",
+    "version": "2.0.0",
+    "contact": {
+      "name": "API Support"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://logs.example.workers.dev",
+      "description": "Production server"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "description": "Check service health and database connectivity",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Service is healthy"
+          }
+        }
+      }
+    },
+    "/api/v1/logs/ingest": {
+      "post": {
+        "summary": "Ingest single log",
+        "description": "Submit a single log entry",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogEntry"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Log ingested successfully"
+          }
+        }
+      }
+    },
+    "/api/v1/logs/search": {
+      "get": {
+        "summary": "Search logs",
+        "description": "Search logs with filters",
+        "parameters": [
+          {
+            "name": "service",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "level",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["DEBUG", "INFO", "WARN", "ERROR", "CRITICAL"]
+            }
+          },
+          {
+            "name": "start_time",
+            "in": "query",
+            "description": "Unix timestamp in milliseconds",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "description": "Unix timestamp in milliseconds",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "maximum": 1000
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search results"
+          }
+        }
+      }
+    },
+    "/api/v1/analysis/analyze": {
+      "post": {
+        "summary": "Trigger AI-powered log analysis",
+        "description": "Request on-demand AI analysis of logs for a specific service and time range. All timestamps MUST be in UTC timezone format (ISO 8601 with 'Z' suffix).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["service_name", "start_time", "end_time"],
+                "properties": {
+                  "service_name": {
+                    "type": "string",
+                    "description": "Name of the service to analyze",
+                    "example": "my-api-service"
+                  },
+                  "start_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Analysis start time in UTC (ISO 8601 format with 'Z' suffix). MUST be in UTC timezone. The 'Z' suffix is mandatory to explicitly indicate UTC and prevent timezone ambiguity.",
+                    "example": "2024-01-15T00:00:00.000Z",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+                  },
+                  "end_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Analysis end time in UTC (ISO 8601 format with 'Z' suffix). MUST be in UTC timezone. The 'Z' suffix is mandatory to explicitly indicate UTC and prevent timezone ambiguity. Must be after start_time. Maximum range is 7 days.",
+                    "example": "2024-01-15T23:59:59.999Z",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+                  },
+                  "search_term": {
+                    "type": "string",
+                    "description": "Optional search term to filter logs before analysis",
+                    "example": "database timeout"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Analysis queued successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "session_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "status_url": {
+                      "type": "string"
+                    },
+                    "estimated_completion": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request - check timezone format and time range",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "requirements": {
+                      "type": "object",
+                      "properties": {
+                        "format": {
+                          "type": "string",
+                          "example": "ISO 8601"
+                        },
+                        "timezone": {
+                          "type": "string",
+                          "example": "UTC (must end with Z)"
+                        },
+                        "example": {
+                          "type": "string",
+                          "example": "2024-01-15T00:00:00.000Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/analysis/status/{session_id}": {
+      "get": {
+        "summary": "Get analysis status",
+        "description": "Check the status and results of an analysis session",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analysis session details"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "API key authentication. Obtain from service administrator."
+      }
+    },
+    "schemas": {
+      "LogEntry": {
+        "type": "object",
+        "required": ["service_name", "level", "message"],
+        "properties": {
+          "service_name": {
+            "type": "string"
+          },
+          "level": {
+            "type": "string",
+            "enum": ["DEBUG", "INFO", "WARN", "ERROR", "CRITICAL"]
+          },
+          "message": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object"
+          },
+          "timestamp": {
+            "type": "integer",
+            "description": "Unix timestamp in milliseconds (optional, defaults to current time)"
+          }
+        }
+      }
+    }
+  }
+}
