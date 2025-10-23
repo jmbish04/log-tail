@@ -26,12 +26,38 @@ CLEANUP_BATCH_SIZE = "1000"
 # Secrets (set with: wrangler secret put LOG_SERVICE_API_KEY)
 # LOG_SERVICE_API_KEY = "your-secret-key"
 
-# Cron triggers for cleanup and analysis
+# Cron triggers for cleanup and daily global analysis
 [triggers]
 crons = [
     "0 2 * * *",   # Daily cleanup at 2 AM
-    "0 */6 * * *"  # Agentic analysis every 6 hours
+    "0 3 * * *"    # Daily global analysis at 3 AM
 ]
+
+# Durable Objects for analysis state management
+[[durable_objects.bindings]]
+name = "ANALYSIS_AGENT"
+class_name = "AnalysisAgent"
+
+# Queue for background analysis jobs
+[[queues.producers]]
+queue = "analysis-queue"
+binding = "ANALYSIS_QUEUE"
+
+[[queues.consumers]]
+queue = "analysis-queue"
+max_batch_size = 10
+max_batch_timeout = 30
+max_retries = 3
+
+# Workflows for orchestration
+[[workflows]]
+name = "analysis-workflow"
+binding = "ANALYSIS_WORKFLOW"
+
+# Assets binding for React frontend
+[assets]
+directory = "./public"
+binding = "ASSETS"
 
 # Enable observability (optional - for monitoring the logging service itself)
 [observability]

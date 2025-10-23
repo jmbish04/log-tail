@@ -8,8 +8,15 @@ import { cors } from 'hono/cors';
 import { Env, TraceItem } from './types';
 import { tailHandler } from './handlers/tail';
 import { httpRoutes } from './handlers/http';
+import { analysisRoutes } from './handlers/analysis';
+import { chatRoutes } from './handlers/chat';
 import { websocketHandler } from './handlers/websocket';
-import { cleanupCron, analysisCron } from './cron';
+import { cleanupCron, globalAnalysisCron } from './cron';
+import { handleAnalysisQueue } from './queues/analysis-queue';
+import { AnalysisQueueMessage } from './types-extended';
+
+// Export Durable Object
+export { AnalysisAgent } from './durable-objects/AnalysisAgent';
 
 // Initialize Hono app
 const app = new Hono<{ Bindings: Env }>();
@@ -51,21 +58,26 @@ app.get('/health', async (c) => {
 
 // API routes
 app.route('/api/v1/logs', httpRoutes);
+app.route('/api/v1/analysis', analysisRoutes);
+app.route('/api/v1/chat', chatRoutes);
 
 // Root endpoint
 app.get('/', (c) => {
     return c.json({
         service: 'Cloudflare Logging Service',
-        version: '1.0.0',
+        version: '2.0.0',
         endpoints: {
             health: '/health',
+            dashboard: '/',
             ingest: '/api/v1/logs/ingest',
             batch_ingest: '/api/v1/logs/ingest/batch',
             search: '/api/v1/logs/search',
             services: '/api/v1/logs/services',
+            analyze: '/api/v1/analysis/analyze',
+            analysis_status: '/api/v1/analysis/status/:session_id',
             websocket: 'ws://<host>/?token=<api_key>',
         },
-        documentation: 'See README.md and AGENTS.md for details',
+        documentation: 'See README.md, AGENTS.md, and OpenAPI spec',
     });
 });
 
@@ -128,9 +140,9 @@ export default {
                     ctx.waitUntil(cleanupCron(env));
                     break;
 
-                case '0 */6 * * *': // Analysis every 6 hours
-                    console.log('Running analysis cron...');
-                    ctx.waitUntil(analysisCron(env));
+                case '0 3 * * *': // Daily global analysis at 3 AM
+                    console.log('Running global analysis cron...');
+                    ctx.waitUntil(globalAnalysisCron(env));
                     break;
 
                 default:
@@ -140,5 +152,12 @@ export default {
             console.error('Cron job error:', error);
             // Don't throw - let the cron job complete even if it fails
         }
+    },
+
+    /**
+     * Queue handler for background analysis jobs
+     */
+    async queue(batch: MessageBatch<AnalysisQueueMessage>, env: Env, ctx: ExecutionContext): Promise<void> {
+        return handleAnalysisQueue(batch, env, ctx);
     },
 };

@@ -10,6 +10,10 @@ export interface Env {
     DEFAULT_TTL_DAYS: string;
     ENABLE_WEBSOCKET: string;
     CLEANUP_BATCH_SIZE: string;
+    ANALYSIS_AGENT: DurableObjectNamespace;
+    ANALYSIS_QUEUE: Queue;
+    ANALYSIS_WORKFLOW: Workflow;
+    ASSETS: Fetcher;
 }
 
 export interface LogEntry {
