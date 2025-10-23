@@ -41,7 +41,7 @@ max_retries = 3
 # Assets binding for React frontend
 [assets]
 directory = "./public"
-binding = "ASSETS" # Note: This binding was not in your original file, I'm adding it based on the section header.
+binding = "ASSETS"
 
 # --- Environment & Secrets ---
 
