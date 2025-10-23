@@ -1,17 +1,22 @@
 {
-  "name": "cloudflare-logging-service",
+  "name": "log-tail",
   "version": "2.0.0",
   "description": "AI-powered logging service for Cloudflare Workers with Durable Objects, Workflows, and real-time analysis",
   "main": "src/index.ts",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "npm run build:frontend && npm run build && wrangler deploy",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:backend": "tsc --noEmit && esbuild src/index.ts --bundle --format=esm --platform=browser --target=es2022 --outfile=dist/worker.js --sourcemap",
+    "build:frontend": "node scripts/build-frontend.mjs",
+    "deploy": "npm run build && wrangler deploy",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "cf-typegen": "wrangler types",
     "migrate": "wrangler d1 migrations apply DB --remote",
-    "build:frontend": "cd frontend && npm run build",
-    "dev:frontend": "cd frontend && npm run dev"
+    "dev:frontend": "npm --prefix frontend run dev"
   },
   "keywords": [
     "cloudflare",
@@ -25,9 +30,10 @@
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.5.0",
     "@cloudflare/workers-types": "^4.20241106.0",
+    "esbuild": "^0.24.0",
     "typescript": "^5.6.3",
     "vitest": "^2.1.8",
-    "wrangler": "^3.90.0"
+    "wrangler": "^4.44.0"
   },
   "dependencies": {
     "hono": "^4.6.14",
