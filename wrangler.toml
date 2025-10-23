@@ -5,13 +5,13 @@ compatibility_date = "2025-01-01"
 # D1 Database for log metadata and configuration
 [[d1_databases]]
 binding = "DB"
-database_name = "platform-logs-db"
-database_id = "YOUR_D1_DATABASE_ID"  # Replace with actual database ID after creation
+database_name = "log-tail"
+database_id = "723535ee-4f71-4b36-b262-0bc8c0a0f9f5"  # Replace with actual database ID after creation
 
 # R2 for full log archive
 [[r2_buckets]]
 binding = "LOGS_ARCHIVE"
-bucket_name = "platform-logs-archive"
+bucket_name = "log-tail-archive"
 
 # AI binding for agentic analysis
 [ai]
@@ -40,7 +40,7 @@ class_name = "AnalysisAgent"
 
 # Queue for background analysis jobs
 [[queues.producers]]
-queue = "analysis-queue"
+queue = "log-tail-analysis"
 binding = "ANALYSIS_QUEUE"
 
 [[queues.consumers]]
@@ -51,7 +51,7 @@ max_retries = 3
 
 # Workflows for orchestration
 [[workflows]]
-name = "analysis-workflow"
+name = "log-tail-analysis"
 binding = "ANALYSIS_WORKFLOW"
 
 # Assets binding for React frontend
