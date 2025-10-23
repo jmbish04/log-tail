@@ -1,0 +1,39 @@
+name = "logsService"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# D1 Database for log metadata and configuration
+[[d1_databases]]
+binding = "DB"
+database_name = "platform-logs-db"
+database_id = "YOUR_D1_DATABASE_ID"  # Replace with actual database ID after creation
+
+# R2 for full log archive
+[[r2_buckets]]
+binding = "LOGS_ARCHIVE"
+bucket_name = "platform-logs-archive"
+
+# AI binding for agentic analysis
+[ai]
+binding = "AI"
+
+# Environment variables
+[vars]
+DEFAULT_TTL_DAYS = "30"
+ENABLE_WEBSOCKET = "true"
+CLEANUP_BATCH_SIZE = "1000"
+
+# Secrets (set with: wrangler secret put LOG_SERVICE_API_KEY)
+# LOG_SERVICE_API_KEY = "your-secret-key"
+
+# Cron triggers for cleanup and analysis
+[triggers]
+crons = [
+    "0 2 * * *",   # Daily cleanup at 2 AM
+    "0 */6 * * *"  # Agentic analysis every 6 hours
+]
+
+# Enable observability (optional - for monitoring the logging service itself)
+[observability]
+enabled = true
+head_sampling_rate = 0.1
