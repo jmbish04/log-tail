@@ -19,6 +19,8 @@ export function useChatHistory(sessionId: string) {
 }
 
 export function useSendChatMessage(sessionId: string) {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (content: string) => {
       if (!sessionId) {
@@ -29,6 +31,9 @@ export function useSendChatMessage(sessionId: string) {
         method: 'POST',
         body: JSON.stringify({ content }),
       });
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['chat-history', sessionId] });
     },
   });
 }
