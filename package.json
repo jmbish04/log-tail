@@ -5,12 +5,11 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
+    "deploy": "npm run build:frontend && npm run build && wrangler deploy",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "cf-typegen": "wrangler types",
-    "migrations:create": "wrangler d1 migrations create platform-logs-db",
-    "migrations:apply": "wrangler d1 migrations apply platform-logs-db",
+    "migrate": "wrangler d1 migrations apply DB --remote",
     "build:frontend": "cd frontend && npm run build",
     "dev:frontend": "cd frontend && npm run dev"
   },
